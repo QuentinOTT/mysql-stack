@@ -1,0 +1,52 @@
+services:
+  db:
+    build: ./mysql
+    container_name: mon-mysql
+    command: --local-infile=1
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mabase
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-psecret"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: ./api
+    container_name: mon-api
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: secret
+      DB_NAME: mabase
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: mon-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
