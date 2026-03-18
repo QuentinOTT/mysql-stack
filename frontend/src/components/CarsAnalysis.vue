@@ -696,7 +696,7 @@ function fmt(n: number): string {
       <div class="header__left">
         <h1 class="title">
           <span class="title__icon">◈</span>
-          Car Analytics
+          Analyse Automobile
           <span class="title__badge">{{ totalCars.toLocaleString() }} véhicules</span>
         </h1>
         <p class="subtitle">Analyse complète de la base de données automobile</p>
@@ -732,7 +732,7 @@ function fmt(n: number): string {
         </select>
       </div>
       <button class="filter-reset" @click="filterCompany='all'; filterRegion='all'; filterBodyStyle='all'; filterGender='all'">
-        ✕ Reset
+        ✕ Réinitialiser
       </button>
     </section>
 
